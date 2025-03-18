@@ -9,7 +9,9 @@
       <tr>
         <th *ngIf="checkBoxMode" style="width: 4rem"><p-tableHeaderCheckbox /></th>
         <th *ngFor="let col of cols">{{ col.header }}</th>
+        <ng-container *ngIf="!checkBoxMode" >
         <th *appHasRole="UserRole.WAREHOUSE_MANAGER">Actions</th> 
+        </ng-container>
       </tr>
     </ng-template>
 
@@ -22,8 +24,8 @@
         <td *ngFor="let col of cols">
           <span>{{ item | get: col.field }}</span>
         </td>
-        <td *appHasRole="UserRole.WAREHOUSE_MANAGER">
-          <button
+        <td *ngIf="!checkBoxMode" >
+          <button *appHasRole="UserRole.WAREHOUSE_MANAGER"
             pButton
             type="button"
             icon="pi pi-pencil"

@@ -24,6 +24,7 @@ export class TrucksComponent {
   cols: ColumnTable[] = [];
   totalElements: number = 0;
   UserRole = Role;
+  dialogRef: DynamicDialogRef | null = null; 
 
   constructor(
     private deleteDialogService: DeleteDialogService,
@@ -35,6 +36,12 @@ export class TrucksComponent {
 
   ngOnInit(): void {
     this.initializeColumns();
+  }
+
+  ngOnDestroy(): void {
+    if (this.dialogRef) {
+      this.dialogRef.close();  
+    }
   }
 
   private initializeColumns(): void {
@@ -103,13 +110,13 @@ export class TrucksComponent {
   }
 
   private openTruckDialog(truck: Truck | null): void {
-    const ref: DynamicDialogRef = this.dialogService.open(AddEditTruckDialogComponent, {
+    this.dialogRef = this.dialogService.open(AddEditTruckDialogComponent, {
       width: '40rem',
       data: { truck },
       contentStyle: { 'max-height': '80vh', 'overflow': 'hidden' }
     });
 
-    ref.onClose.subscribe((updatedTruck: Truck) => {
+    this.dialogRef.onClose.subscribe((updatedTruck: Truck) => {
       if (updatedTruck) {
         truck ? this.updateTruckInList(truck, updatedTruck) : this.addNewTruck(updatedTruck);
       }

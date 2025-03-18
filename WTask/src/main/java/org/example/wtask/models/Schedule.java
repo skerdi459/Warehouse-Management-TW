@@ -36,7 +36,7 @@ public class Schedule {
 
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
     @ToString.Exclude
-    @EqualsAndHashCode.Exclude
+//    @EqualsAndHashCode.Exclude
     private Set<Order> orders = new HashSet<>();
 
     private int itemCount;

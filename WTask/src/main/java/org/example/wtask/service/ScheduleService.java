@@ -112,7 +112,7 @@ public class ScheduleService {
         int totalItems = orders.stream().mapToInt(order -> order.getOrderItems().size()).sum();
 
         if (totalItems > trucks.size() * 10) {
-            throw new IllegalArgumentException("Not enough trucks. You need more truck(s) to schedule deliveries.");
+            throw new IllegalArgumentException("You need more truck(s) to schedule deliveries.");
         }
     }
 

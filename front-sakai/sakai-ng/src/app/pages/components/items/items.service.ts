@@ -50,7 +50,7 @@ export class ItemsService {
     private generateParams(filters :commonFilter):HttpParams{
         let params = new HttpParams();
         params = params
-            .set("page", 0)
+            .set("page", filters.page)
             .set("size", filters.size)
             .set("lifeCycle", "READY")
             return params;

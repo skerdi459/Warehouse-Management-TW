@@ -40,7 +40,6 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // Configure AuthenticationManager bean
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder)
             throws Exception {

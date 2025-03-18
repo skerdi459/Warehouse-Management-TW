@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ColumnTable, Role, User, commonFilter } from '../../../core/models/models';
 import { DeleteDialogService } from '../../../core/common/deleteDialog.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -15,11 +15,13 @@ import { TokenStorageService } from '../../../core/auth/service/token-storage.se
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DialogService, MessageService],
 })
-export class UserManagmentComponent {
+
+export class UserManagmentComponent implements OnInit,OnDestroy {
   users: User[] = [];
   cols: ColumnTable[] = [];
   totalElements: number = 0;
   UserRole = Role;
+  dialogRef: DynamicDialogRef | null = null; 
 
   get loginUser(): User | null {
     return this.tokenStorage.getUser()
@@ -36,6 +38,12 @@ export class UserManagmentComponent {
 
   ngOnInit(): void {
     this.initializeColumns();
+  }
+
+  ngOnDestroy(): void {
+    if (this.dialogRef) {
+      this.dialogRef.close();  
+    }
   }
 
 
@@ -101,7 +109,7 @@ export class UserManagmentComponent {
   }
 
   private openUserDialog(user: User | null): void {
-    const ref: DynamicDialogRef = this.dialogService.open(AddEditUserDialogComponent, {
+     this.dialogRef=this.dialogService.open(AddEditUserDialogComponent, {
       width: '40rem',
       data: { user },
       contentStyle: {
@@ -110,7 +118,7 @@ export class UserManagmentComponent {
       },
     });
 
-    ref.onClose.subscribe((updatedUser: User) => {
+    this.dialogRef.onClose.subscribe((updatedUser: User) => {
       if (updatedUser) {
         this.handleUserUpdate(updatedUser, user);
       }

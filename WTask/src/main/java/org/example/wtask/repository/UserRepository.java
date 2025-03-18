@@ -13,4 +13,6 @@ public interface UserRepository extends JpaRepository<User, Long>  {
     Page<User> findAllByLifeCycle(Pageable pageable, LifeCycle lifeCycle);
 
     boolean existsByUsernameAndLifeCycle(String userName,LifeCycle lifeCycle);
+    boolean existsByEmailAndLifeCycle(String email,LifeCycle lifeCycle);
+
 }

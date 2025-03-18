@@ -44,7 +44,11 @@ public class UserService {
     public User registerUser(RegisterRequest registerRequest) {
         if (userRepository.existsByUsernameAndLifeCycle(registerRequest.getUsername(), LifeCycle.READY)) {
             logger.error("Username {} is already taken!", registerRequest.getUsername());
-            throw new RuntimeException("Error: Username is already taken!");
+            throw new IllegalArgumentException("Error: Username is already taken!");
+        }
+        if (userRepository.existsByEmailAndLifeCycle(registerRequest.getEmail(), LifeCycle.READY)) {
+            logger.error("Email {} is already taken!", registerRequest.getUsername());
+            throw new IllegalArgumentException("Error: Email is already taken!");
         }
 
         User user = new User();

@@ -6,9 +6,7 @@ import org.example.wtask.models.Enums.OrderStatus;
 import org.example.wtask.models.Schedule;
 import org.example.wtask.models.User;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @Builder
@@ -26,7 +24,7 @@ public class OrderDTO {
     private User user;
 
 
-    private Set<OrderItemDTO> orderItems = new HashSet<>();
+    private List<OrderItemDTO> orderItems = new ArrayList<>();
 
     @JsonIgnore
     private Schedule schedule;

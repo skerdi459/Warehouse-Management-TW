@@ -46,6 +46,7 @@ public class OrderService {
         order.setStatus(OrderStatus.CREATED);
         order.setOrderQuantity(0);
 
+
         if (orderDTO.getDeadlineDate() != null) {
             order.setDeadlineDate(orderDTO.getDeadlineDate());
         }
@@ -57,10 +58,16 @@ public class OrderService {
             throw new IllegalArgumentException("User not found with ID: " + orderDTO.getUser().getId());
         }
 
-        Set<OrderItem> orderItems = new HashSet<>();
+        List<OrderItem> orderItems = new ArrayList<>();
+        Set<String> existingItemNames = new HashSet<>();
         for (OrderItemDTO itemDTO : orderDTO.getOrderItems()) {
             OrderItem item = new OrderItem();
             item.setQuantity(itemDTO.getQuantity());
+
+            if (existingItemNames.contains(itemDTO.getItem().getItemName())) {
+                throw new IllegalArgumentException("Duplicate item with name: " + itemDTO.getItem().getItemName()    + " in the order.");
+            }
+
             if(itemDTO.getItem().getQuantity() < itemDTO.getQuantity() ){
                 throw new IllegalArgumentException("Quantity cannot exceed"+itemDTO.getItem().getQuantity());
             }
@@ -69,6 +76,7 @@ public class OrderService {
             item.setItem(itemEntity);
             item.setOrder(order);
             orderItems.add(item);
+            existingItemNames.add(item.getItem().getItemName());
 
             order.setOrderQuantity(order.getOrderQuantity() + item.getQuantity());
         }
@@ -90,26 +98,44 @@ public class OrderService {
         }
 
         existingOrder.setOrderQuantity(0);
+        List<OrderItem> updatedOrderItems = new ArrayList<>();
 
-        Set<OrderItem> updatedOrderItems = new HashSet<>();
         for (OrderItemDTO updatedItemDTO : updatedOrderDTO.getOrderItems()) {
-            OrderItem updatedItem = new OrderItem();
-            updatedItem.setQuantity(updatedItemDTO.getQuantity());
-            if(updatedItemDTO.getItem().getQuantity() < updatedItemDTO.getQuantity() ){
-                throw new IllegalArgumentException("Quantity cannot exceed"+updatedItemDTO.getItem().getQuantity());
+            OrderItem updatedItem = null;
+
+            for (OrderItem existingItem : existingOrder.getOrderItems()) {
+                if (existingItem.getItem().getId().equals(updatedItemDTO.getItem().getId())) {
+                    updatedItem = existingItem;
+                    break;
+                }
             }
+
+            if (updatedItem == null) {
+                updatedItem = new OrderItem();
+                updatedItem.setOrder(existingOrder);
+            }
+
+            updatedItem.setQuantity(updatedItemDTO.getQuantity());
+            if (updatedItemDTO.getItem().getQuantity() < updatedItemDTO.getQuantity()) {
+                throw new IllegalArgumentException("Quantity cannot exceed " + updatedItemDTO.getItem().getQuantity());
+            }
+
             Item updatedItemEntity = objectMapper.convertValue(updatedItemDTO.getItem(), Item.class);
             updatedItem.setItem(updatedItemEntity);
-            updatedItem.setOrder(existingOrder);
 
             updatedOrderItems.add(updatedItem);
-
             existingOrder.setOrderQuantity(existingOrder.getOrderQuantity() + updatedItem.getQuantity());
         }
 
+        existingOrder.getOrderItems().removeIf(existingItem ->
+                updatedOrderItems.stream().noneMatch(updatedItem ->
+                        updatedItem.getItem().getId().equals(existingItem.getItem().getId())));
+
         existingOrder.getOrderItems().clear();
         existingOrder.getOrderItems().addAll(updatedOrderItems);
+
         existingOrder.setStatus(OrderStatus.CREATED);
+
         Order savedOrder = orderRepository.save(existingOrder);
         logger.info("Order updated successfully with ID: {}", savedOrder.getId());
 

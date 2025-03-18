@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Item } from '../../../core/models/models';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -68,6 +68,7 @@ export class AddEditItemDialogComponent implements OnInit {
       unitPrice: [0, [Validators.required, Validators.min(0)]]
     });
   }
+
 
   ngOnInit(): void {
     this.item = this.config.data.item ?? null;

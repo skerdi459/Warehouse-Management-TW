@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ColumnTable, Item, Role, commonFilter } from '../../../core/models/models';
 import { DeleteDialogService } from '../../../core/common/deleteDialog.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -14,11 +14,12 @@ import { MessageService } from 'primeng/api';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DialogService, MessageService],
 })
-export class ItemsComponent implements OnInit {
+export class ItemsComponent implements OnInit ,OnDestroy{
   items: Item[] = [];
   cols: ColumnTable[] = [];
   totalElements: number = 0;
   UserRole=Role;
+  dialogRef: DynamicDialogRef | null = null; 
 
   constructor(
     private deleteDialogService: DeleteDialogService,
@@ -28,10 +29,18 @@ export class ItemsComponent implements OnInit {
     private dialogService: DialogService
   ) {}
 
+
+
   ngOnInit(): void {
     this.initializeColumns();
   }
 
+  ngOnDestroy(): void {
+    if (this.dialogRef) {
+      this.dialogRef.close();  
+    }
+  }
+  
   private initializeColumns(): void {
     this.cols = [
       { header: 'Name', field: 'itemName' },
@@ -74,7 +83,7 @@ export class ItemsComponent implements OnInit {
     const commonFilter: commonFilter = {
       filters: event.filters || {},
       size: event.rows || 10,
-      page: event.first ? event.first / 10 : 1,
+      page: event.first ? event.first / 10 : 0,
       sortOrder: event.sortOrder || 1,
     };
 
@@ -88,13 +97,13 @@ export class ItemsComponent implements OnInit {
   }
 
   private openEditDialog(item: Item | null): void {
-    const dialogRef: DynamicDialogRef = this.dialogService.open(AddEditItemDialogComponent, {
+     this.dialogRef = this.dialogService.open(AddEditItemDialogComponent, {
       width: '40rem',
       data: { item },
       contentStyle: { 'max-height': '80vh', overflow: 'hidden' },
     });
 
-    dialogRef.onClose.subscribe((updatedItem: Item) => {
+    this.dialogRef.onClose.subscribe((updatedItem: Item) => {
       if (updatedItem) {
         this.handleDialogClose(item, updatedItem);
       }

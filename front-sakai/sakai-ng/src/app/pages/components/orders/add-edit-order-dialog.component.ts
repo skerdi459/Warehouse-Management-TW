@@ -17,8 +17,12 @@ import { OrderService } from './order.service';
   standalone: true,
   template: `
   <div class="p-4">
+  <div class="flex justify-between items-center mb-6">
     <h2 class="text-xl font-bold mb-4">{{ viewModeTitle }}</h2>
-
+    <button pButton type="button" icon="pi pi-times" (click)="dialogRef.close()"
+                class="p-button-text p-button-rounded p-button-plain hover:bg-gray-100">
+        </button>
+  </div>
     <!-- Order Information (view mode) -->
     <div *ngIf="view" class="mb-4 space-y-2">
       <div><strong>Order Number:</strong> {{ order?.orderNumber }}</div>
@@ -38,7 +42,7 @@ import { OrderService } from './order.service';
       <!-- Deadline Date -->
       <div class="p-field">
         <label class="block mb-2">Deadline Date</label>
-        <p-calendar formControlName="deadlineDate" dateFormat="yy-mm-dd" [disabled]="view" tabindex="2" [appendTo]="'body'"[minDate]="todayDate" ></p-calendar>
+        <p-calendar formControlName="deadlineDate" dateFormat="yy-mm-dd" [disabled]="view" tabindex="2" [appendTo]="'body'" [minDate]="todayDate" ></p-calendar>
       </div>
 
       <!-- Items Form Array -->
@@ -48,7 +52,7 @@ import { OrderService } from './order.service';
             <!-- Item Selection -->
             <div>
               <label class="block mb-2">Item</label>
-              <p-dropdown [options]="allItems" formControlName="item" optionLabel="itemName" placeholder="Select Item"
+              <p-dropdown [options]="allItems" formControlName="item" appendTo="'body'" optionLabel="itemName" placeholder="Select Item"
                           [disabled]="view" [showClear]="true">
                 <ng-template let-item pTemplate="item">
                   <div>{{ item.itemName }} ({{ item.quantity }} available)</div>
@@ -77,7 +81,6 @@ import { OrderService } from './order.service';
 
       <!-- Form Actions -->
       <div class="flex justify-end gap-2 mt-6">
-        <button pButton type="button" label="Cancel" class="p-button-outlined" (click)="dialogRef.close()"></button>
         <button *ngIf="!view" pButton type="submit" label="Save" [disabled]="orderForm.invalid" class="p-button-success"></button>
       </div>
     </form>

@@ -21,10 +21,11 @@ public class SchedulerJob {
     @Autowired
     private ScheduleServiceJob scheduleServiceJob;
 
-    @Scheduled(cron = "*/20 * * * * ?")
-    public void executeJob() {
+//    @Scheduled(cron = "*/20 * * * * ?")
+@Scheduled(cron = "0 0 8 * * ?")
+public void executeJob() {
         logger.info("Daily Scheduled Job started");
-//        scheduleServiceJob.executeJob();
+        scheduleServiceJob.executeJob();
         logger.info("Daily Scheduled Job completed");
 
     }

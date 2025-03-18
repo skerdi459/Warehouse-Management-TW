@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ColumnTable, Schedule, commonFilter } from '../../../core/models/models';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { TableLazyLoadEvent } from 'primeng/table';
@@ -15,11 +15,12 @@ import { MessageService } from 'primeng/api';
   providers: [DialogService,MessageService],
 
 })
-export class ScheduleComponent {
+export class ScheduleComponent implements OnInit,OnDestroy{
 
   schedule: Schedule[] = [];
   cols: ColumnTable[] = [];
   totalElements: number = 0;
+  dialogRef: DynamicDialogRef | null = null; 
 
   constructor(private messageService: MessageService,
     private cdr: ChangeDetectorRef,
@@ -31,6 +32,11 @@ export class ScheduleComponent {
    this.initCols()
   }
 
+  ngOnDestroy(): void {
+    if (this.dialogRef) {
+      this.dialogRef.close();  
+    }
+  }
 
   public onAddItem():void {
     this.openEditDialog(null, 'edit');
@@ -78,7 +84,7 @@ export class ScheduleComponent {
   }
 
   private openEditDialog(schedule: Schedule | null, acces: string) {
-    const ref: DynamicDialogRef = this.dialogService.open(AddEditScheduleDialogComponent, {
+    this.dialogRef= this.dialogService.open(AddEditScheduleDialogComponent, {
       width: '86vh',
       data: { schedule, access: acces },
       contentStyle: {
@@ -88,7 +94,7 @@ export class ScheduleComponent {
       }
     });
 
-    ref.onClose.subscribe((updatedItem: Schedule) => {
+    this.dialogRef.onClose.subscribe((updatedItem: Schedule) => {
       if (updatedItem) {
         if (schedule) {
           const index = this.schedule.findIndex((u) => u.id === schedule.id);

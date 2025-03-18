@@ -39,6 +39,8 @@ export class OrdersComponent implements OnInit, OnChanges {
   displayDeclineDialog: boolean = false;
   declineReason: string = '';
   UserRole = Role;
+  dialogRef: DynamicDialogRef | null = null; 
+
   constructor(
     private confirmationService: DeleteDialogService,
     private cdr: ChangeDetectorRef,
@@ -65,6 +67,11 @@ export class OrdersComponent implements OnInit, OnChanges {
     this.loadOrders()
   }
 
+  ngOnDestroy(): void {
+    if (this.dialogRef) {
+      this.dialogRef.close();  
+    }
+  }
 
   public loadOrders($event?: TableLazyLoadEvent): void {
     const commonFilter: commonFilter = {
@@ -182,13 +189,13 @@ export class OrdersComponent implements OnInit, OnChanges {
     }
   }
   public openEditDialog(order: Order | null, mode: 'view' | 'edit' | 'create'): void {
-    const ref: DynamicDialogRef = this.dialogService.open(AddEditOrderDialogComponent, {
+    this.dialogRef = this.dialogService.open(AddEditOrderDialogComponent, {
       width: '40rem',
       data: { order, mode },
       contentStyle: { 'max-height': '80vh', 'overflow': 'scroll' }
     });
 
-    ref.onClose.subscribe((updatedItem: Order) => {
+    this.dialogRef.onClose.subscribe((updatedItem: Order) => {
       if (updatedItem && mode !== 'view') {
         this.updateOrders(updatedItem, order, mode);
       }

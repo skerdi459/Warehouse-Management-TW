@@ -10,7 +10,6 @@ export const appRoutes: Routes = [
     {
         path: '',
         component: AppLayout,
-        // canActivate: [AuthGuard], 
         children: [
             {
                 path: 'users',

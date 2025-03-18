@@ -15,7 +15,8 @@
     <ng-template pTemplate="body" let-item>
       <tr>
         <td *ngFor="let col of cols">
-          <span *ngIf="col.field !== 'orders'">{{ item | get: col.field }}</span>
+          <span *ngIf="col.field == 'status'">{{ item | get: col.field }}</span>
+          <span *ngIf="col.field =='deliveryDate'">{{ (item | get: col.field) | date: 'short'}}</span>
           <span *ngIf="col.field === 'orders'">
             {{ item | orderIds }}
           </span>

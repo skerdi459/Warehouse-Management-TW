@@ -19,7 +19,7 @@ public class ScheduleDTO {
     private Date deliveryDate;
     private DeliveryStatus status;
 
-    @JsonBackReference
+
     private Set<OrderDTO> orders = new HashSet<>();
     private Set<TruckDTO> trucks = new HashSet<>();
 

@@ -9,9 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.example.wtask.models.Enums.OrderStatus;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
     @Data
@@ -47,7 +45,7 @@ import java.util.Set;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Set<OrderItem> orderItems = new HashSet<>();
+    private List<OrderItem> orderItems = new ArrayList<>();
 
 
     @ManyToOne

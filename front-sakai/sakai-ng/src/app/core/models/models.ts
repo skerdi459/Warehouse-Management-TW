@@ -11,6 +11,7 @@ export interface User {
   export interface ColumnTable {
     header: string;
     field: string;
+    type?:string;
   }
 
   export interface Truck {

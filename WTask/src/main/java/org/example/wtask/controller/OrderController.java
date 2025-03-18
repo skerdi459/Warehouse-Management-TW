@@ -41,14 +41,14 @@ public class OrderController {
     }
 
     @PostMapping("/create-order")
-    public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO order) {
+    public ResponseEntity<?> createOrder(@RequestBody OrderDTO order) {
         try {
             logger.info("Creating new order for user: {}", order.getUser());
             OrderDTO createdOrder = orderService.createOrder(order);
             return new ResponseEntity<>(createdOrder, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             logger.error("Error creating order: {}", e.getMessage());
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

@@ -26,7 +26,6 @@ import { GetPipeModule } from "../../../core/pipes/get.pipe";
       </div>
 
       <form [formGroup]="scheduleForm" (ngSubmit)="onSubmit()" class="space-y-4">
-        <!-- Delivery Date -->
         <label for="deliveryDate" class="block text-sm font-medium text-gray-700">Delivery Date *</label>
         <p-calendar id="deliveryDate" formControlName="deliveryDate" dateFormat="yy-mm-dd"
                     [disabledDays]="[0]"
@@ -154,6 +153,7 @@ export class AddEditScheduleDialogComponent implements OnInit {
   access: string = '';
   cols: ColumnTable[] = [];
   colsOrder: ColumnTable[] = [];
+  todayDate: Date;
 
   constructor(
     private fb: FormBuilder,
@@ -162,6 +162,7 @@ export class AddEditScheduleDialogComponent implements OnInit {
     private scheduleService: ScheduleService,
     private dialogRef: DynamicDialogRef
   ) {
+    this.todayDate = new Date();
 
     this.access = this.config.data?.access ?? '';
 
@@ -246,8 +247,9 @@ export class AddEditScheduleDialogComponent implements OnInit {
   }
 
   private patchFormValues(schedule: Schedule): void {
+    
     this.scheduleForm.patchValue({
-      deliveryDate: new Date(schedule.deliveryDate),
+      deliveryDate: schedule.deliveryDate ? new Date(schedule.deliveryDate) : null
     });
     this.selectedOrder = schedule?.orders || [];
     this.selectedTrucks = schedule.trucks || [];

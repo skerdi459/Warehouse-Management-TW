@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,15 +32,19 @@ public class UserController {
 
     @PostMapping("/create-user")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
-        User user = userService.registerUser(registerRequest);
-
-        if (user != null) {
+        try {
+            User user = userService.registerUser(registerRequest);
             logger.info("User registered successfully: {}", user);
             return ResponseEntity.ok(user);
+        } catch (IllegalArgumentException e) {
+            logger.error("Illegal argument exception during registration: {}", e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            logger.error("Unexpected error during registration: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: Something went wrong!");
         }
-        logger.error("User registration failed for request: {}", registerRequest);
-        return ResponseEntity.badRequest().body("Error: User registration failed!");
     }
+
 
     @DeleteMapping("/{id}/soft-delete")
     public ResponseEntity<Boolean> softDeleteUser(@PathVariable Long id) {
