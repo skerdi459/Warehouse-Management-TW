@@ -213,7 +213,7 @@ export class OrdersComponent implements OnInit, OnChanges {
         this.orders[index] = updatedItem;
       }
     } else {
-      this.orders.push({ ...updatedItem });
+      this.orders.unshift({ ...updatedItem });
       this.totalElements++;
     }
     this.cdr.detectChanges()
