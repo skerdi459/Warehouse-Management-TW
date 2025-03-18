@@ -12,10 +12,9 @@ export const appRoutes: Routes = [
         component: AppLayout,
         children: [
             {
-                path: 'users',
-                loadChildren: () => import('./app/pages/components/user-managment/user-managment.module').then(m => m.UserManagmentModule),
-                canActivate: [AuthGuard], 
-                data: { roles: [Role.SYSTEM_ADMIN] }
+                path: '',
+                redirectTo: 'orders', 
+                pathMatch: 'full'
             },
             {
                 path: 'items',
