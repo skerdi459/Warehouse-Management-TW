@@ -1,0 +1,63 @@
+<p-confirmDialog></p-confirmDialog>
+<p-toast></p-toast>
+
+<div class="overflow-x-auto">
+  <!-- PrimeNG Table with Pagination -->
+  <p-table [value]="trucks" [paginator]="true" [rows]="10" [totalRecords]="totalElements"  [(selection)]="selectedTrucks" [lazy]="true" [tableStyle]="{ 'min-width': '50rem' }" (onLazyLoad)="loadTrucks($event)">
+    <!-- Dynamic Header -->
+    <ng-template pTemplate="header">
+      <tr>
+        <th *ngIf="checkBoxMode" style="width: 4rem"><p-tableHeaderCheckbox /></th>
+        <th *ngFor="let col of cols">{{ col.header }}</th>
+        <th *appHasRole="UserRole.WAREHOUSE_MANAGER">Actions</th> 
+      </tr>
+    </ng-template>
+
+    <!-- Dynamic Body -->
+    <ng-template pTemplate="body" let-item>
+      <tr>
+        <td *ngIf="checkBoxMode">
+          <p-tableCheckbox [value]="item" />
+      </td>
+        <td *ngFor="let col of cols">
+          <span>{{ item | get: col.field }}</span>
+        </td>
+        <td *appHasRole="UserRole.WAREHOUSE_MANAGER">
+          <button
+            pButton
+            type="button"
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-info mr-2"
+            (click)="onEditTruck(item)"
+            title="Edit User"
+          ></button>
+          <button
+            pButton
+            type="button"
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-danger"
+            (click)="onDeleteTruck(item)"
+            title="Delete User"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <div *ngIf="trucks && trucks.length === 0" class="p-4 mt-4 border-t border-gray-300">
+    <h3 class="font-bold text-lg mb-2 text-center">No trucks are available</h3>
+  </div>
+
+  <div *appHasRole="UserRole.WAREHOUSE_MANAGER">
+    <div  *ngIf="!checkBoxMode" class="p-4 mt-4 border-t border-gray-300">
+      <h3 class="font-bold text-lg mb-2">Add New Truck</h3>
+      <button pButton label="Add Trucks" class="p-button mt-4" (click)="onAddTruck()"></button>
+    </div>
+  
+    <div *ngIf="checkBoxMode" class="p-4 mt-4 border-t border-gray-300">
+      <button pButton label="Select Trucks" class="p-button mt-4" (click)="emitSelectedTrucks()"></button>
+    </div>
+  
+  </div>
+
+</div>

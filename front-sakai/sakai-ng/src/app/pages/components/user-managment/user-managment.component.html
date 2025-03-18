@@ -1,0 +1,50 @@
+<p-confirmDialog></p-confirmDialog>
+<p-toast></p-toast>
+
+<div class="overflow-x-auto">
+  <!-- PrimeNG Table with Pagination -->
+  <p-table [value]="users" [paginator]="true" [rows]="10" [totalRecords]="totalElements" [lazy]="true" [tableStyle]="{ 'min-width': '50rem' }" (onLazyLoad)="loadUsers($event)">
+    <!-- Dynamic Header -->
+    <ng-template pTemplate="header">
+      <tr>
+        <th *ngFor="let col of cols">{{ col.header }}</th>
+        <th>Actions</th> 
+      </tr>
+    </ng-template>
+
+    <!-- Dynamic Body -->
+    <ng-template pTemplate="body" let-user>
+      <tr>
+        <td *ngFor="let col of cols">
+          <span *ngIf="col.field !== 'roles'">{{ user | get: col.field }}</span>
+          <span *ngIf="col.field === 'roles'">{{ user.roles.join(', ') }}</span> 
+        </td>
+        <td>
+          <button
+            pButton
+            type="button"
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-info mr-2"
+            (click)="onEditUser(user)"
+            title="Edit User"
+          ></button>
+          <button *ngIf="loginUser?.id != user.id"
+            pButton
+            type="button"
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-danger"
+            (click)="onDeleteUser(user)"
+            title="Delete User"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <div *appHasRole="UserRole.SYSTEM_ADMIN">
+    <div class="p-4 mt-4 border-t border-gray-300">
+      <h3 class="font-bold text-lg mb-2">Add New User</h3>
+      <button pButton label="Add User" class="p-button mt-4" (click)="onAddUser()"></button>
+    </div>
+  </div>
+ 
+</div>
