@@ -32,10 +32,8 @@ public class OrderSpecifications {
                 return null;
             }
 
-            // Truncate the input date to make sure only yyyy-MM-dd part is compared
             Date truncatedDate = truncateToDateOnly(date);
 
-            // Use the `DATE` function for comparison to ignore time
             return builder.greaterThanOrEqualTo(
                     builder.function("DATE", Date.class, root.get("deadlineDate")),
                     truncatedDate
@@ -43,7 +41,6 @@ public class OrderSpecifications {
         };
     }
 
-    // Utility method to remove the time part from the date
     private static Date truncateToDateOnly(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);

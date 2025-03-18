@@ -32,17 +32,6 @@ public class OrderItem {
     @EqualsAndHashCode.Exclude
     private Item item;
     private int quantity;
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OrderItem orderItem = (OrderItem) o;
-        return quantity == orderItem.quantity && Objects.equals(item, orderItem.item) && Objects.equals(order, orderItem.order);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(item, quantity);
-    }
 
 }

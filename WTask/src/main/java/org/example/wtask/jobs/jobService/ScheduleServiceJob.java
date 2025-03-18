@@ -38,8 +38,8 @@ public class ScheduleServiceJob {
 
         logger.info("Executing schedule job for delivery date: {}", yesterday);
 
-//        List<Schedule> schedules = scheduleRepository.findByDeliveryDateAndStatus(yesterday, DeliveryStatus.SCHEDULED);
-         List<Schedule> schedules= scheduleRepository.findAll();
+        List<Schedule> schedules = scheduleRepository.findByDeliveryDateAndStatus(yesterday, DeliveryStatus.SCHEDULED);
+//         List<Schedule> schedules= scheduleRepository.findAll();
         for (Schedule schedule : schedules) {
             logger.info("Processing schedule with ID: {} and status: {}", schedule.getId(), schedule.getStatus());
 

@@ -28,13 +28,13 @@ private final UserRepository userRepository;
     @Bean
 CommandLineRunner createDefaultUser() {
     return args -> {
-        if (userRepository.count() == 0) { // Check if the user table is empty
+        if (userRepository.count() == 0) {
             User defaultUser = User.builder()
                     .username("skerdi")
-                    .password(encoder.encode("1")) // Plain-text password will be hashed
+                    .password(encoder.encode("1"))
                     .email("admin@example.com")
                     .roles(Set.of(Role.SYSTEM_ADMIN))
-                    .lifeCycle(LifeCycle.READY) // Set the lifecycle status to READY
+                    .lifeCycle(LifeCycle.READY)
                     .build();
 
             userRepository.save(defaultUser);

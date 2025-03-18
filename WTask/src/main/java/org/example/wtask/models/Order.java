@@ -17,12 +17,12 @@ import java.util.*;
     @Table(name = "orders")
     public class Order {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-        private Integer orderQuantity;
-        private  String declineReason;
+    private Integer orderQuantity;
+    private  String declineReason;
     @Column(unique = true)
     private String orderNumber;
 

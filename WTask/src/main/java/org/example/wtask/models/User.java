@@ -31,9 +31,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private LifeCycle lifeCycle = LifeCycle.READY;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @ToString.Exclude  // Prevent recursion in toString()
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @JsonIgnore // Prevents recursion when serializing User
+    @JsonIgnore
     private Set<Order> orders = new HashSet<>();
 
 }
