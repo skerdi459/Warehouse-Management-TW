@@ -187,6 +187,8 @@ export class OrdersComponent implements OnInit, OnChanges {
       this.orders[index] = order;
       this.cdr.detectChanges();
     }
+    this.showMessage('success', 'Order Updated status', `${status} has been successfully updated.`);
+
   }
   public openEditDialog(order: Order | null, mode: 'view' | 'edit' | 'create'): void {
     this.dialogRef = this.dialogService.open(AddEditOrderDialogComponent, {

@@ -71,7 +71,7 @@
           </ng-container>
           <ng-container *ngIf="canCancel(order)">
             <button pButton type="button" icon="pi pi-times" class="p-button-rounded p-button-danger"
-                    (click)="cancelOrder(order)" title="Submit Order"></button>
+                    (click)="cancelOrder(order)" title="Cancel Order"></button>
           </ng-container>
           <ng-container *ngIf="canApproveDecline(order)">
             <button pButton type="button" icon="pi pi-thumbs-up-fill" class="p-button-rounded p-button-success"

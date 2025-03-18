@@ -105,8 +105,8 @@ export class ScheduleComponent implements OnInit,OnDestroy{
           this.schedule.push({ ...updatedItem });
           this.totalElements++
         }
+        this.showMessage('success', 'Item Added', `${updatedItem.id} has been successfully added.`);
       }
-      this.showMessage('success', 'Item Added', `${updatedItem.id} has been successfully added.`);
 
       this.cdr.detectChanges()
 
