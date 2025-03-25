@@ -35,7 +35,7 @@
     </ng-template>
   </p-table>
 
-  <div class="p-4 mt-4 border-t border-gray-300">
+  <div *appHasRole="Role.WAREHOUSE_MANAGER" class="p-4 mt-4 border-t border-gray-300">
     <h3 class="font-bold text-lg mb-2">Add New Item</h3>
     <button pButton label="Schedule an delivery" class="p-button mt-4" (click)="onAddItem()"></button>
   </div>

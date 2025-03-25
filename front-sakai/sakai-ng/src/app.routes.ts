@@ -17,6 +17,13 @@ export const appRoutes: Routes = [
                 pathMatch: 'full'
             },
             {
+                path: 'users',
+                loadChildren: () => import('./app/pages/components/user-managment/user-managment.module').then(m => m.UserManagmentModule),
+                canActivate: [AuthGuard], 
+                data: { roles: [Role.SYSTEM_ADMIN,Role.WAREHOUSE_MANAGER] }
+
+            },
+            {
                 path: 'items',
                 loadChildren: () => import('./app/pages/components/items/item.module').then(m => m.ItemsModule),
                 canActivate: [AuthGuard], 

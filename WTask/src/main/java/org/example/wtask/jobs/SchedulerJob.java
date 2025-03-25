@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,9 +22,9 @@ public class SchedulerJob {
     @Autowired
     private ScheduleServiceJob scheduleServiceJob;
 
-//    @Scheduled(cron = "*/20 * * * * ?")
-@Scheduled(cron = "0 0 8 * * ?")
-public void executeJob() {
+    @Scheduled(cron = "*/20 * * * * ?")
+//@Scheduled(cron = "0 0 8 * * ?")
+public void executeJob() throws ParseException {
         logger.info("Daily Scheduled Job started");
         scheduleServiceJob.executeJob();
         logger.info("Daily Scheduled Job completed");

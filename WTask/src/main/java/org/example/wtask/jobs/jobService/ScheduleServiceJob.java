@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -31,10 +33,16 @@ public class ScheduleServiceJob {
         this.truckRepository = truckRepository;
     }
 
-    public void executeJob() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, -1);
-        Date yesterday = calendar.getTime();
+    public void executeJob() throws ParseException {
+        // Hardcoded test date
+        String testDateStr = "2025-03-22";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateP = dateFormat.parse(testDateStr);
+        Date yesterday = truncateToDateOnly(dateP);
+
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.add(Calendar.DATE, -1);
+//        Date yesterday = calendar.getTime();
 
         logger.info("Executing schedule job for delivery date: {}", yesterday);
 
@@ -65,5 +73,16 @@ public class ScheduleServiceJob {
         }
 
         logger.info("Schedule job completed for date: {}", yesterday);
+    }
+
+
+    private static Date truncateToDateOnly(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
     }
 }

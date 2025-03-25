@@ -10,7 +10,7 @@ export class DeleteDialogService {
   openDeleteConfirmation(message: string, acceptCallback: () => void): void {
     this.confirmationService.confirm({
       message: message,
-      header: 'Delete Confirmation',
+      header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Yes',
       rejectLabel: 'No',

@@ -140,7 +140,7 @@ export class OrdersComponent implements OnInit, OnChanges {
 
   public cancelOrder(order: Order): void {
     this.confirmationService.openDeleteConfirmation(
-      `Are you sure you want to approve ${order.id}?`,
+      `Are you sure you want to cancel ${order.orderNumber}?`,
       () => {
         this.orderService.cancelOrder(order.id).subscribe((updatedOrder) => {
           this.updateOrders(updatedOrder, order, 'edit');

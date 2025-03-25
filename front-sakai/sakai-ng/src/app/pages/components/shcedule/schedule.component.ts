@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { ColumnTable, Schedule, commonFilter } from '../../../core/models/models';
+import { ColumnTable, Role, Schedule, commonFilter } from '../../../core/models/models';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { AddEditScheduleDialogComponent } from './add-view-schedule.component';
@@ -21,7 +21,7 @@ export class ScheduleComponent implements OnInit,OnDestroy{
   cols: ColumnTable[] = [];
   totalElements: number = 0;
   dialogRef: DynamicDialogRef | null = null; 
-
+  Role=Role
   constructor(private messageService: MessageService,
     private cdr: ChangeDetectorRef,
     private scheduleService: ScheduleService,
